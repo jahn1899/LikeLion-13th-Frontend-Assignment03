@@ -23,46 +23,63 @@ btn2.addEventListener('click', function () {
   }
 });
 
-   var form = document.querySelector("form");
+const signupBtn = document.querySelector('.submit-btn');
+const nameInput = document.querySelector('#name');
+const emailInput = document.querySelector('#email');
+const pwInput = document.querySelector('#pw1');
+const pwCheckInput = document.querySelector('#pw2');
+const pwError = document.querySelectorAll('.pw-error');
 
-    var nameInput = document.getElementById("name");
-    var emailInput = document.getElementById("email");
-    var pw1Input = document.getElementById("pw1");
-    var pw2Input = document.getElementById("pw2");
+signupBtn.addEventListener('click', (e) => {
+  e.preventDefault();
+  const name = nameInput.value.trim();
+  const email = emailInput.value.trim();
+  const pw = pwInput.value;
+  const pwCheck = pwCheckInput.value;
 
-    form.addEventListener("submit", function (e) {
-      e.preventDefault();
+  let isValid = true;
 
-      var name = nameInput.value;
-      var email = emailInput.value;
-      var pw1 = pw1Input.value;
-      var pw2 = pw2Input.value;
+  // 이름 검사
+  if (!name) {
+    nameInput.style.border = '2px solid red';
+    pwError[0].textContent = '이름을 입력하세요';
+    isValid = false;
+  } else {
+    nameInput.style.border = '2px solid green';
+    pwError[0].textContent = '';
+  }
 
-      // 이름: 비어있지 않으면 성공
-      if (name !== "") {
-        nameInput.style.border = "2px solid green";
-      } else {
-        nameInput.style.border = "2px solid red";
-      }
+  // 이메일 검사
+  if (!email.includes('@') || !email.includes('.')) {
+    emailInput.style.border = '2px solid red';
+    pwError[1].textContent = '유효한 이메일을 입력하세요';
+    isValid = false;
+  } else {
+    emailInput.style.border = '2px solid green';
+    pwError[1].textContent = '';
+  }
 
-      // 이메일: @와 . 포함 시 성공 (간단 검사)
-      if (email.indexOf("@") > -1 && email.indexOf(".") > -1) {
-        emailInput.style.border = "2px solid green";
-      } else {
-        emailInput.style.border = "2px solid red";
-      }
+  // 비밀번호 검사
+  if (pw.length < 6) {
+    pwInput.style.border = '2px solid red';
+    pwError[2].textContent = '비밀번호는 최소 6자입니다.';
+    isValid = false;
+  } else {
+    pwInput.style.border = '2px solid green';
+    pwError[2].textContent = '';
+  }
 
-      // 비밀번호: 6자 이상
-      if (pw1.length >= 6) {
-        pw1Input.style.border = "2px solid green";
-      } else {
-        pw1Input.style.border = "2px solid red";
-      }
+  // 비밀번호 확인 검사
+  if (pw !== pwCheck || !pwCheck) {
+    pwCheckInput.style.border = '2px solid red';
+    pwError[3].textContent = '비밀번호가 일치하지 않습니다.';
+    isValid = false;
+  } else {
+    pwCheckInput.style.border = '2px solid green';
+    pwError[3].textContent = '';
+  }
 
-      // 비밀번호 확인: 일치 여부
-      if (pw1 === pw2 && pw2 !== "") {
-        pw2Input.style.border = "2px solid green";
-      } else {
-        pw2Input.style.border = "2px solid red";
-      }
-    });
+  if (isValid) {
+    alert('회원가입 완료!');
+  }
+});
